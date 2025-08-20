@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slope & Intercept Visualizer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      background: #ffe4f7;
+      color: #d72660;
+    }
+    h2 {
+      color: #d72660;
+    }
+    .controls {
+      margin-bottom: 20px;
+      background: #ffd1ea;
+      padding: 16px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px #f7b2d9;
+      display: inline-block;
+    }
+    label {
+      margin-right: 10px;
+      color: #d72660;
+      font-weight: bold;
+    }
+    input {
+      width: 60px;
+      margin-right: 20px;
+      border: 1px solid #d72660;
+      border-radius: 5px;
+      padding: 4px;
+      background: #fff0f6;
+      color: #d72660;
+    }
+    button {
+      background: #d72660;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      padding: 6px 16px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 2px 4px #f7b2d9;
+      transition: background 0.2s;
+    }
+    button:hover {
+      background: #f7b2d9;
+      color: #d72660;
+    }
+    canvas {
+      border: 2px solid #d72660;
+      background: #fff0f6;
+      box-shadow: 0 2px 8px #f7b2d9;
+    }
+  </style>
+</head>
+<body>
+  <h2>Slope & Intercept Visualizer</h2>
+  <div class="controls">
+    <label for="slope">Slope (m):</label>
+    <input type="number" id="slope" value="1" step="any">
+    <label for="intercept">Intercept (b):</label>
+    <input type="number" id="intercept" value="0" step="any">
+    <button onclick="plotLine()">Plot Line</button>
+  </div>
+  <canvas id="plot" width="500" height="400"></canvas>
+  <script>
+    function plotLine() {
+      const m = parseFloat(document.getElementById('slope').value);
+      const b = parseFloat(document.getElementById('intercept').value);
+      const canvas = document.getElementById('plot');
+      const ctx = canvas.getContext('2d');
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      // Draw axes
+      ctx.strokeStyle = '#aaa';
+      ctx.beginPath();
+      ctx.moveTo(0, canvas.height/2);
+      ctx.lineTo(canvas.width, canvas.height/2);
+      ctx.moveTo(canvas.width/2, 0);
+      ctx.lineTo(canvas.width/2, canvas.height);
+      ctx.stroke();
+      // Plot line: y = mx + b
+      ctx.strokeStyle = '#0074D9';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      // x from -10 to 10
+      for (let x = -10; x <= 10; x += 0.1) {
+        let px = canvas.width/2 + x*20;
+        let py = canvas.height/2 - (m*x + b)*20;
+        if (x === -10) ctx.moveTo(px, py);
+        else ctx.lineTo(px, py);
+      }
+      ctx.stroke();
+    }
+    // Initial plot
+    plotLine();
+  </script>
+</body>
+</html>
